@@ -1,92 +1,109 @@
-<?php
-
-
-namespace App\Helpers;
-
-use Illuminate\Support\Str;
-
-class Helper
-{
-    public static function menu($menus, $parent_id = 0, $char = '')
-    {
-        $html = '';
-
-        foreach ($menus as $key => $menu) {
-            if ($menu->parent_id == $parent_id) {
-                $html .= '
-                    <tr>
-                        <td>' . $menu->id . '</td>
-                        <td>' . $char . $menu->name . '</td>
-                        <td>' . self::active($menu->active) . '</td>
-                        <td>' . $menu->updated_at . '</td>
-                        <td>
-                            <a class="btn btn-primary btn-sm" href="/admin/menus/edit/' . $menu->id . '">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <a href="#" class="btn btn-danger btn-sm"
-                                onclick="removeRow(' . $menu->id . ', \'/admin/menus/destroy\')">
-                                <i class="fas fa-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
-                ';
-
-                unset($menus[$key]);
-
-                $html .= self::menu($menus, $menu->id, $char . '|--');
-            }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Resume</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
         }
-
-        return $html;
-    }
-
-    public static function active($active = 0): string
-    {
-        return $active == 0 ? '<span class="btn btn-danger btn-xs">NO</span>'
-            : '<span class="btn btn-success btn-xs">YES</span>';
-    }
-
-    public static function menus($menus, $parent_id = 0) :string
-    {
-        $html = '';
-        foreach ($menus as $key => $menu) {
-            if ($menu->parent_id == $parent_id) {
-                $html .= '
-                    <li>
-                        <a href="/danh-muc/' . $menu->id . '-' . Str::slug($menu->name, '-') . '.html">
-                            ' . $menu->name . '
-                        </a>';
-
-                unset($menus[$key]);
-
-                if (self::isChild($menus, $menu->id)) {
-                    $html .= '<ul class="sub-menu">';
-                    $html .= self::menus($menus, $menu->id);
-                    $html .= '</ul>';
-                }
-
-                $html .= '</li>';
-            }
+        header {
+            background-color: #0073e6;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
         }
-
-        return $html;
-    }
-
-    public static function isChild($menus, $id) : bool
-    {
-        foreach ($menus as $menu) {
-            if ($menu->parent_id == $id) {
-                return true;
-            }
+        .container {
+            width: 80%;
+            margin: 2rem auto;
+            background-color: white;
+            padding: 2rem;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
         }
+        .profile-photo {
+            display: block;
+            margin: 0 auto;
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+        }
+        h1, h2 {
+            color: #0073e6;
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 1rem;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem 0;
+            background-color: #0073e6;
+            color: white;
+            margin-top: 2rem;
+        }
+        nav a {
+            color: #0073e6;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
 
-        return false;
-    }
+    <header>
+        <h1>My Resume</h1>
+    </header>
 
-    public static function price($price = 0, $priceSale = 0)
-    {
-        if ($priceSale != 0) return number_format($priceSale);
-        if ($price != 0)  return number_format($price);
-        return '<a href="/lien-he.html">Liên Hệ</a>';
-    }
-}
+    <div class="container">
+        <img src="image/454525307_1255273229177844_6305543997950335492_n.jpg" alt="Profile Photo" class="profile-photo">
+
+        <h2>Summary</h2>
+        <p>I am a student at Can Tho University for the 2020-2025 school year. Specialized in computer networks and data communications.</p>
+
+        <h2>Education</h2>
+        <ul>
+            <li> DAM DOI HIGH SCHOOL(2017-2020)</li>
+            <li>Can Tho University (2020-2025)</li>
+        </ul>
+
+        <h2>Experience</h2>
+        <ul>
+            <li>
+                <strong>Software Engineer</strong> - TechCorp (2022-Present)
+                <br>Developing and maintaining web applications using modern frameworks and technologies.
+            </li>
+            <li>
+                <strong>Intern</strong> - WebDev Inc. (2021-2022)
+                <br>Worked on front-end development and collaborated with the design team to create user-friendly websites.
+            </li>
+        </ul>
+
+        <h2>Projects</h2>
+        <ul>
+            <li><a href="https://github.com/yourusername/project1">Project 1</a> - Description of project 1.</li>
+            <li><a href="https://github.com/yourusername/project2">Project 2</a> - Description of project 2.</li>
+        </ul>
+
+        <nav>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Your Name. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
